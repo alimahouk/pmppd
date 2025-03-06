@@ -1,0 +1,22 @@
+1. When the PMPP server is launched for the first time, it gets the current date D and stores it.
+ 
+2. Then you keep track of 2 numbers: 
+ 
+ _ the number N of seconds which have passed since D:
+  a. When the server is "on", keep incrementing N by 1 every second 
+  b. When the server is "off", and goes back "on", get the current date, compare it to the stored date D
+  and get the number of seconds from the difference. Add it to N, and then start doing step 'a' again
+ 
+ _ the number O of online seconds since date D:
+  increment O by 1 every second when the PMPP server is online
+
+ The number you want is P=O/N*100, it will give you a percentage between 0 (never online) and 100 (if the PMPP server is always online)
+ 
+ Important: When N reaches: 7*24*3600 (number of seconds in a week), get a new date D and start all over again
+ (2 reasons: we don't want a gigantic number obviously, but also, if a node wasn't going online a lot at first, and then
+ starts going online frequently, its number P will be low, despite the fact that it's currently a good "rendez-vous point")
+
+3. When a node finds its "contacts" when it goes online (you can send it at various moments actually, the point is to have the most up to date P value), make the contacts send their P (call it the "presence ratio" or whatever :p )
+A PMPP server will keep the presence ratios of other servers as up to date as possible
+ 
+4. When exchanging meeting points, send the points with the highest P score first. Send um.. 10 meeting points if possible (or choose another number)
